@@ -2,6 +2,7 @@
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Hosting;
+using Microsoft.SqlServer.Server;
 using System.Data;
 
 namespace la_mia_pizzeria_static.Controllers
@@ -33,6 +34,7 @@ namespace la_mia_pizzeria_static.Controllers
             return View();
         }
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Create(Pizza pizza)
         {
             if (!ModelState.IsValid)
@@ -41,6 +43,38 @@ namespace la_mia_pizzeria_static.Controllers
             }
 
             db.Pizzas.Add(pizza);
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Update(int id)
+        {
+            Pizza pizza = db.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+            if (pizza == null)
+                return NotFound();
+            return View(pizza);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(int id, Pizza data)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            Pizza pizza = db.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            pizza.Name = data.Name;
+            pizza.Description = data.Description;
+            pizza.Image = data.Image;
+            pizza.Price = data.Price;
             db.SaveChanges();
 
             return RedirectToAction("Index");

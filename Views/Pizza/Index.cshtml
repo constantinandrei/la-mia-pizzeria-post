@@ -24,9 +24,15 @@
                                 <p class="card-text">
                                     Prezzo: @pizza.Price €
                                 </p>
-                                <p>
-                                    <a href="@Url.Action("Detail", new {id = pizza.Id})" class="text-end">Dettagli</a>
-                                </p>
+                                <ul class="list-group">
+                                    <li class="list-group-item">
+                                        <a href="@Url.Action("Detail", new {id = pizza.Id})" class="text-end">Dettagli</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="@Url.Action("Update", new {id = pizza.Id})" class="text-end">Modifica</a>
+                                    </li>
+                                   
+                                </ul>
                             </div>
                         </div>
                     </div>
